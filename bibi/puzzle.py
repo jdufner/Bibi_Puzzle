@@ -4,18 +4,21 @@ from card import Card
 class Puzzle:
 
     def find_solution(stack, counter, solution, cards):
-        if Puzzle.is_valid(solution):
-            if len(solution) >= 9:
-                print("Solution: " + solution)
+        i = 0
+        iterationen = len(cards) * 4
+        while i < iterationen:
+            if (i == 0):
+                solution.append(cards.pop(0))
             else:
-                solution_copy = Puzzle.copy_cards(solution)
-                cards_copy = Puzzle.copy_cards(cards)
-                solution_copy.append(cards_copy.pop(0))
-                Puzzle.find_solution(stack + 1, 0, solution_copy, cards_copy)
-        else:
-            if (counter <= len(cards) * 4):
                 Puzzle.get_next_or_rotate_card_new(solution, cards)
-                Puzzle.find_solution(stack, counter + 1, solution, cards)
+            i += 1
+            if Puzzle.is_valid(solution):
+                if len(solution) >= 9:
+                    print("Solution: " + solution)
+                else:
+                    solution_copy = Puzzle.copy_cards(solution)
+                    cards_copy = Puzzle.copy_cards(cards)
+                    Puzzle.find_solution(stack + 1, 0, solution_copy, cards_copy)
 
     def copy_cards(cards) -> list:
         copy = []
@@ -30,7 +33,9 @@ class Puzzle:
             solution[len(solution)-1].rotate_clockwise()
 
     def get_next_or_rotate_card_new(solution, cards) -> Card:
-        if (len(solution) == 0 or solution[len(solution)-1].rotation == card.ROTATION_VOLL):
+        #if (len(solution) == 0 and len(cards) > 0):
+            #return solution.append(cards.pop(0))
+        if (len(solution) > 0 and solution[len(solution)-1].rotation == card.ROTATION_DREIVIERTEL):
             c = solution.pop(len(solution)-1)
             c.rotation = card.ROTATION_KEINE
             cards.append(c)

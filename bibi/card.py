@@ -1,5 +1,5 @@
-OBEN = "oben"
-UNTEN = "unten"
+OBEN = "O"
+UNTEN = "U"
 ROTATION_KEINE = 0
 ROTATION_VIERTEL = 90
 ROTATION_HALB = 180
@@ -13,6 +13,12 @@ class Connector:
         self.nummer = nummer
         if (ausrichtung == OBEN or ausrichtung == UNTEN):
             self.ausrichtung = ausrichtung
+
+    def __str__(self) -> str:
+        return (str(self.nummer) + self.ausrichtung)
+
+    def __repr__(self) -> str:
+        return (str(self.nummer) + self.ausrichtung)
 
     def __eq__(self, other):
         """Overrides the default implementation"""
@@ -38,10 +44,20 @@ class Card:
         self.rotation = rotation
 
     def __str__(self) -> str:
-        return (str(self.nummer))
+        return (str(self.nummer) + "(" + 
+            #str(self.oben) + "," + 
+            #str(self.rechts) + "," + 
+            #str(self.unten) + "," + 
+            #str(self.links) + ")(" +
+            str(self.rotation) + ")")
 
     def __repr__(self) -> str:
-        return (str(self.nummer))
+        return (str(self.nummer) + "(" + 
+            #str(self.oben) + "," + 
+            #str(self.rechts) + "," + 
+            #str(self.unten) + "," + 
+            #str(self.links) + ")(" +
+            str(self.rotation) + ")")
     
     def copy(self):
         return Card(self.nummer,
@@ -67,13 +83,61 @@ class Card:
             self.rotation = ROTATION_KEINE
 
     def check_rechts(self, other):
-        return self.rechts.suites(other.links)
+        c1 = Card.get_rechts(self)
+        c2 = Card.get_links(other)
+        return c1.suites(c2)
 
     def check_links(self, other):
-        return self.links.suites(other.rechts)
+        c1 = Card.get_links(self)
+        c2 = Card.get_rechts(other)
+        return c1.suites(c2)
 
     def check_oben(self, other):
-        return self.oben.suites(other.unten)
+        c1 = Card.get_oben(self)
+        c2 = Card.get_unten(other)
+        return c1.suites(c2)
 
     def check_unten(self, other):
-        return self.unten.suites(other.oben)
+        c1 = Card.get_unten(self)
+        c2 = Card.get_oben(other)
+        return c1.suites(c2)
+
+    def get_rechts(card) -> Connector:
+        if (card.rotation == ROTATION_KEINE):
+            return card.rechts
+        elif (card.rotation == ROTATION_VIERTEL):
+            return card.oben
+        elif (card.rotation == ROTATION_HALB):
+            return card.links
+        elif (card.rotation == ROTATION_DREIVIERTEL):
+            return card.unten
+
+    def get_unten(card) -> Connector:
+        if (card.rotation == ROTATION_KEINE):
+            return card.unten
+        elif (card.rotation == ROTATION_VIERTEL):
+            return card.rechts
+        elif (card.rotation == ROTATION_HALB):
+            return card.oben
+        elif (card.rotation == ROTATION_DREIVIERTEL):
+            return card.links
+
+    def get_links(card) -> Connector:
+        if (card.rotation == ROTATION_KEINE):
+            return card.links
+        elif (card.rotation == ROTATION_VIERTEL):
+            return card.unten
+        elif (card.rotation == ROTATION_HALB):
+            return card.rechts
+        elif (card.rotation == ROTATION_DREIVIERTEL):
+            return card.oben
+
+    def get_oben(card) -> Connector:
+        if (card.rotation == ROTATION_KEINE):
+            return card.oben
+        elif (card.rotation == ROTATION_VIERTEL):
+            return card.links
+        elif (card.rotation == ROTATION_HALB):
+            return card.unten
+        elif (card.rotation == ROTATION_DREIVIERTEL):
+            return card.rechts

@@ -7,23 +7,23 @@ from card import Connector
 class TestConnector(unittest.TestCase):
 
     def test_equals(self):
-        c1 = Connector(1, "oben")
-        c2 = Connector(1, "oben")
+        c1 = Connector(1, "O")
+        c2 = Connector(1, "O")
         self.assertEqual(c1, c2)
 
     def test_suites1(self):
-        c1 = Connector(1, "oben")
-        c2 = Connector(1, "unten")
+        c1 = Connector(1, "O")
+        c2 = Connector(1, "U")
         self.assertTrue(c1.suites(c2))
 
     def test_suites2(self):
-        c1 = Connector(1, "oben")
-        c2 = Connector(1, "oben")
+        c1 = Connector(1, "O")
+        c2 = Connector(1, "O")
         self.assertFalse(c1.suites(c2))
 
 class TestCard(unittest.TestCase):
 
-    def test_check_rechts(self):
+    def test_check_rechts_1(self):
         c1 = Card(1, 
             Connector(2, card.OBEN), 
             Connector(1, card.OBEN), 
@@ -35,6 +35,36 @@ class TestCard(unittest.TestCase):
             Connector(3, card.OBEN), 
             Connector(4, card.UNTEN), 
             Connector(1, card.UNTEN),
+            card.ROTATION_KEINE)
+        self.assertTrue(c1.check_rechts(c2))
+
+    def test_check_rechts_2(self):
+        c1 = Card(1, 
+            Connector(2, card.OBEN), 
+            Connector(1, card.OBEN), 
+            Connector(4, card.UNTEN), 
+            Connector(3, card.UNTEN),
+            card.ROTATION_VIERTEL)
+        c2 = Card(2,
+            Connector(4, card.OBEN), 
+            Connector(3, card.OBEN), 
+            Connector(4, card.UNTEN), 
+            Connector(1, card.UNTEN),
+            card.ROTATION_KEINE)
+        self.assertFalse(c1.check_rechts(c2))
+
+    def test_check_rechts_3(self):
+        c1 = Card(1, 
+            Connector(2, card.OBEN), 
+            Connector(1, card.OBEN), 
+            Connector(4, card.UNTEN), 
+            Connector(3, card.UNTEN),
+            card.ROTATION_VIERTEL)
+        c2 = Card(2,
+            Connector(4, card.OBEN), 
+            Connector(3, card.OBEN), 
+            Connector(4, card.UNTEN), 
+            Connector(2, card.UNTEN),
             card.ROTATION_KEINE)
         self.assertTrue(c1.check_rechts(c2))
 
@@ -144,7 +174,7 @@ class TestCard(unittest.TestCase):
             Connector(4, card.UNTEN), 
             Connector(3, card.UNTEN),
             card.ROTATION_KEINE)
-        self.assertEqual("1", str(c1))
+        self.assertEqual("1(0)", str(c1))
 
     def test_copy(self):
         c1 = Card(1, 
