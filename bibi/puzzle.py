@@ -3,7 +3,7 @@ from card import Card
 
 class Puzzle:
 
-    def find_solution(stack, counter, solution, cards):
+    def find_solution(stack, solution, cards):
         i = 0
         iterationen = len(cards) * 4
         while i < iterationen:
@@ -14,11 +14,11 @@ class Puzzle:
             i += 1
             if Puzzle.is_valid(solution):
                 if len(solution) >= 9:
-                    print("Solution: " + solution)
+                    print("Solution: " + str(solution))
                 else:
                     solution_copy = Puzzle.copy_cards(solution)
                     cards_copy = Puzzle.copy_cards(cards)
-                    Puzzle.find_solution(stack + 1, 0, solution_copy, cards_copy)
+                    Puzzle.find_solution(stack + 1, solution_copy, cards_copy)
 
     def copy_cards(cards) -> list:
         copy = []

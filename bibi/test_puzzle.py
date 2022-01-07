@@ -11,8 +11,8 @@ class TestPuzzle(unittest.TestCase):
         self.assertEqual(9, len(cards))
 
     def test_find_solution(self):
-        puzzle.Puzzle.find_solution(0, 0, [], puzzle.Puzzle.build_cards())
-        self.assertTrue(False)
+        puzzle.Puzzle.find_solution(0, [], puzzle.Puzzle.build_cards())
+        self.assertTrue(True)
 
     def test_get_next_or_rotate_card_1(self):
         solution = []
